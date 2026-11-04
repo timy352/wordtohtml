@@ -176,7 +176,7 @@ $text = $rt->readDocument('FILENAME','NNNN');
 
 ## UPDATE NOTES
 
-Version 2.1.15 - Now using Mathjax version 4, so it will now display Surface and Volume Integral symbols. Also several bug fixes to clear undefined variable warning messages in PHP 8.2 and above. It has been tested up to PHP 8.5
+Version 2.1.15 - Now using Mathjax version 4, so it will now display Surface and Volume Integral symbols. Also several bug fixes to clear depreciated and undefined variable warning messages in PHP 8.2 and above. It has been tested up to PHP 8.5
 
 Version 2.1.14 - It will now display horizontal lines correctly. A DIV has been placed around tables. Hyperlinks now follow what is set in Word. Prevented the browser caching of images which can cause problems if the images are updated in a document. It will recognise images that have been rotated or flipped in Word and display them. It will now recognise Text Boxes and any rotation they may have. Headers and Footers are also now included including any images in them. PNG images can now have transparent backgrounds. It will now correctly replicate the relative width of a table no matter how it is done - '%' or 'cm'. Whether by whole table and/or individual columns. e.g. if a table takes up 50% of the available page width, it will take up 50% of the screen width. It will also now recognise whether the table is left, centre or right justified and display accordingly. It will also allow for having text alongside a table - left or right side. Unfortunately at the moment I can't replicate have a centre table with text either side, so in this case it just reverts to putting the table on the left and the text on the right.
 
