@@ -6,7 +6,7 @@ This improved Microsoft Word DOCX to HTML class will recognise nearly all the fo
 
 For update notes detailing changes up to the latest version of 2.1.14 see below.
 
-NOTE - Needs at least php 5 and will run on up to (at least) php 8.1.
+NOTE - Needs at least php 5 and will run on up to (at least) php 8.5.
 
 NOTE:- It will not read the older 'DOC' Word format. In this case it will give an error message saying that it is a 'non zip file'.
 
@@ -50,7 +50,7 @@ FEATURES
 
  18. It will now recognise symbols from most of the symbol character sets used in Word (Wingdings, Wingdings 2, Wingdings 3, Webdings, Symbol, Zapf Dingbats). These in the main are not commonly available on the web. However most of the characters or equivalents are available in the Unicode character set so these are used instead. Available when using php 7.2 and above. Please note that not all browsers can display the full Unicode character set.
 
- 19. Will now recognise nearly all Word Mathematical Equations, both standalone and inline with text. It does this using the online version of Mathjax (so internet acces is required for this). Note that Mathjax does not support the Surface Integral and Volume Integral symbols, so multiple Line Integral Symbols are used instead. Also the Double Square Bracket is not supported, so any occurences of this are replaced by the Double Pipe.
+ 19. Will now recognise nearly all Word Mathematical Equations, both standalone and inline with text. It does this using the online version of Mathjax (so internet acces is required for this). Note that Mathjax does not support Double Square Brackets, so any occurences of this are replaced by the Double Pipe.
 
  20. It will now also display headers and footers including any images in them. The default is to show them - when there is more than one set of headers and footers in the document it shows:-
 	a) Second page onwards when the first page is different.
@@ -175,6 +175,8 @@ $text = $rt->readDocument('FILENAME','NNNN');
 ```
 
 ## UPDATE NOTES
+
+Version 2.1.15 - Now using Mathjax version 4, so it will now display Surface and Volume Integral symbols. Also several bug fixes to clear undefined variable warning messages in PHP 8.2 and above. It has been tested up to PHP 8.5
 
 Version 2.1.14 - It will now display horizontal lines correctly. A DIV has been placed around tables. Hyperlinks now follow what is set in Word. Prevented the browser caching of images which can cause problems if the images are updated in a document. It will recognise images that have been rotated or flipped in Word and display them. It will now recognise Text Boxes and any rotation they may have. Headers and Footers are also now included including any images in them. PNG images can now have transparent backgrounds. It will now correctly replicate the relative width of a table no matter how it is done - '%' or 'cm'. Whether by whole table and/or individual columns. e.g. if a table takes up 50% of the available page width, it will take up 50% of the screen width. It will also now recognise whether the table is left, centre or right justified and display accordingly. It will also allow for having text alongside a table - left or right side. Unfortunately at the moment I can't replicate have a centre table with text either side, so in this case it just reverts to putting the table on the left and the text on the right.
 
