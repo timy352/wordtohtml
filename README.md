@@ -4,7 +4,7 @@
 
 This improved Microsoft Word DOCX to HTML class will recognise nearly all the formatting, themes, images, tables, text-boxes etc. in the original Word DOCX document. It will now also display any Mathematical Equations in the document either standalone or inline with normal text. The only significant exception is Wordart and tabs. Tabs are very difficult to replicate in HTLM due to a web page page width being very flexible and different sizes of screens. The resultant HTML should look very much like the original.
 
-For update notes detailing changes up to the latest version of 2.1.14 see below.
+For update notes detailing changes up to the latest version of 2.1.15 see below.
 
 NOTE - Needs at least php 5 and will run on up to (at least) php 8.5.
 
@@ -176,7 +176,7 @@ $text = $rt->readDocument('FILENAME','NNNN');
 
 ## UPDATE NOTES
 
-Version 2.1.15 - Now using Mathjax version 4, so it will now display Surface and Volume Integral symbols. Also several bug fixes to clear depreciated and undefined variable warning messages in PHP 8.2 and above. It has been tested up to PHP 8.5
+Version 2.1.15 - Now using Mathjax version 4, so it will now display Surface and Volume Integral symbols. Also several bug fixes to clear depreciated and undefined variable error/warning messages in PHP 8.2 and above. It has been tested up to PHP 8.5
 
 Version 2.1.14 - It will now display horizontal lines correctly. A DIV has been placed around tables. Hyperlinks now follow what is set in Word. Prevented the browser caching of images which can cause problems if the images are updated in a document. It will recognise images that have been rotated or flipped in Word and display them. It will now recognise Text Boxes and any rotation they may have. Headers and Footers are also now included including any images in them. PNG images can now have transparent backgrounds. It will now correctly replicate the relative width of a table no matter how it is done - '%' or 'cm'. Whether by whole table and/or individual columns. e.g. if a table takes up 50% of the available page width, it will take up 50% of the screen width. It will also now recognise whether the table is left, centre or right justified and display accordingly. It will also allow for having text alongside a table - left or right side. Unfortunately at the moment I can't replicate have a centre table with text either side, so in this case it just reverts to putting the table on the left and the text on the right.
 
