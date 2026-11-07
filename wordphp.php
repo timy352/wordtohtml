@@ -6,10 +6,10 @@ MathJax = {
 </script>
 
 <script type="text/javascript" id="MathJax-script" async
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js">
 </script>
 <?php
-class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
+class WordPHP // Version v2.1.15 - Timothy Edwards - 4 Nov 2026
 {
 	private $debug = false;
 	private $file;
@@ -35,6 +35,10 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 	private $snt = 0;  //Section counter - used for using correct width in defining position of text boxes
 	private $snti = 'N';   // find page size definition - used for using correct width in defining position of text boxes
 	private $HF = '';
+	private $Marwidth = array();
+	private $Rstyle = array();
+	private $anchor = array();
+
 	
 	/**
 	 * CONSTRUCTOR
@@ -328,6 +332,7 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 		$reader1 = new XMLReader();
 		$Pelement = array();
 		$Ttext = array();
+		$Ttext[0] = $Halign ='';
 		$h = 0;
 		$zst = array();
 		$zst[0] = '';
@@ -533,9 +538,10 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 		$reader1 = new XMLReader();
 		$Pelement = array();
 		$Ttext = array();
+		$Ttext[0] = '';
 		$h = 0;
 		$zst = array();
-		$zst[0] = '';
+		$zst[0] = $Falign = '';
 		$zstc = 1;
 		if (isset($xml_foot1) AND $Hfoot <> 'N'){ 
 			if ($Hfoot == 'F'){
@@ -1018,7 +1024,7 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 		$ret= array();
 		$img = null;
 		$Footref = '';
-		$Ttmp = $script = $tcol = $Sfont = $tch = $tch1 = $Tstr = $relId = '';
+		$Ttmp = $script = $tcol = $Sfont = $tch = $tch1 = $Tstr = $relId = $US = '';
 		static $zimgcount = 1;
 		$Lstyle = array();
 		$Icrop = array();
@@ -1457,7 +1463,7 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 	{
 		
 		$PSret= array();
-		$DC = $Pstyle = $amar = $bmar = $cmar = $dmar = $PSret['Dcap'] = $aind = $bind = $cind = $dind = $Listlevel = $bcol = $hr = $Lnum = $palign = '';
+		$DC = $Pstyle = $amar = $bmar = $cmar = $dmar = $PSret['Dcap'] = $aind = $bind = $cind = $dind = $Listlevel = $bcol = $hr = $Lnum = $palign = $Slsz = $Slnum = '';
 		$node = trim($xml->readOuterXML());
 		if ($node <>''){
 			$reader = new XMLReader();
@@ -2121,7 +2127,7 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 	private function getHyperlink(&$xml,$RelF)
 	{
 		$ret = array('open'=>'<ul>','close'=>'</ul>');
-		$link ='';
+		$link = $tar = '';
 		static $rels_end = null ;
 		static $rels_foot = null ;
 		if($xml->hasAttributes) {
@@ -2243,8 +2249,8 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 	private function getParagraph(&$paragraph,$Tstyle)
 	{
 		$zst = array();
-		$text = $BookMk = $BookRet = $Pstyle = $zst[0] = $CBdef = $CBdef = $Mpara = $MP = $Malign = '';
-		$list_format=array();
+		$text = $BookMk = $BookRet = $Pstyle = $zst[0] = $CBdef = $CBdef = $Mpara = $MP = $Malign = $Ttext = $IflipH = $IflipV = '';
+		$list_format = $Tlist_format = array();
 		$zzz = $text;
 		$zstc = 1;
 		$ac = 'N';
@@ -2449,6 +2455,9 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 						if ($tc == 'Y'){
 							$Ttext .= "</span></p> \n";
 						}
+						if(!isset($Tlist_format['Pform'])){
+							$Tlist_format['Pform'] = '';
+						}
 						$Ttext .= "<p ".$Tlist_format['Pform']."> ".$Telement['style'].$Telement['text'];
 					} else {
 						$Ttext .= $Telement['text'];
@@ -2544,7 +2553,9 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 //		if ($TXT == '' AND $Ttext <> ''){
 			$text .= $Ttext;
 //		} 
-		$text .= $list_format['hr'];
+		if (isset($list_format['hr'])){
+			$text .= $list_format['hr'];
+		}
 		return $text;
 	}
 			
@@ -2638,9 +2649,9 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 					} else if ($Mintegral == '∮'){
 						$Dmaths .= "\oint".$MuO;
 					} else if ($Mintegral == '∯'){
-						$Dmaths .= "\oint\oint".$MuO;
+						$Dmaths .= "\oiint".$MuO;
 					} else if ($Mintegral == '∰'){
-						$Dmaths .= "\oint\oint\oint".$MuO;
+						$Dmaths .= "\oiiint".$MuO;
 					} else if ($Mintegral == '∑'){
 						$Dmaths .= "\sum".$MuON;
 						if ($MIsubL <> 'N'){
@@ -3298,30 +3309,30 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 					$tabc = "margin-left:auto; margin-right:0px; ";
 				}
 				if ($this->Tcss == 'Y'){
-					$table = "<div class='tab'><table style='border-collapse:collapse; width:100%;'><tbody>";
+					$table = "<div class='tab'><table style='border-collapse:collapse; width:100%;'>";
 				} else if($Tabtyp == 'pct'){
 					$tt = ceil($Tabwid / 50);
-					$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."%; ".$tts.$tabc."'><tbody>";
+					$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."%; ".$tts.$tabc."'>";
 				} else if($Tabtyp == 'dxa'){
 					if ($this->Tcss == 'F'){
 						$tt = ceil($Tabwid / $this->MTFactor);
-						$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."px; ".$tts.$tabc."'><tbody>";
+						$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."px; ".$tts.$tabc."'>";
 					} else {
 						$tt = ceil(100 * $Tabwid / $this->EffPwidth[$this->snt]);
 						if ($tt > 100){
 							$tt = 100;
 						}
-						$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."%; ".$tts.$tabc."'><tbody>";
+						$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."%; ".$tts.$tabc."'>";
 					}
 				} else {
 					if ($this->Tcss == 'F'){
-						$table = "<div class='tab'><table style='border-collapse:collapse; ".$tts.$tabc."'><tbody>";
+						$table = "<div class='tab'><table style='border-collapse:collapse; ".$tts.$tabc."'>";
 					} else {
 						$tt = ceil(100 * $Twidth / $this->EffPwidth[$this->snt]);
 						if ($tt > 100){
 							$tt = 100;
 						}
-						$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."%; ".$tts.$tabc."'><tbody>";
+						$table = "<div class='tab'><table style='border-collapse:collapse; width:".$tt."%; ".$tts.$tabc."'>";
 					}
 				}
 				$tabhead = '';
@@ -3375,6 +3386,16 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 						$Twidth = $Twidth + $Cwidth[$TCcount]; // get width of the table
 					}
 				}
+			}
+
+			if ($xml->nodeType == XMLREADER::END_ELEMENT && $xml->name === 'w:tblGrid') { //
+				$table .= "<colgroup>";
+				$cc = 1;
+				while ($cc <= $TCcount){
+					$table .= "<col style=\"width: ".round($Cwidth[$cc]/$Twidth *100,2)."%;\">";
+					++$cc;
+				}
+				$table .= "</colgroup><tbody>";
 			}
 			
 			if ($xml->nodeType == XMLREADER::ELEMENT && $xml->name === 'w:tr') { //find and process a table row
@@ -3499,42 +3520,44 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 								if ($ts['cellwtype'] == 'pct'){
 									$cellwc = "width:".floor($ts['cellwidth'] / 50)."%; ";
 								} else if ($ts['cellwtype'] == 'dxa'){
-									$cellwc = "width:".floor($ts['cellwidth'] / $Twidth *95)."%; ";
+									$cellwc = "width:".round($ts['cellwidth'] / $Twidth *100,2)."%; ";
+									$cellwc = '';
 								} else {
 									$cellwc = '';
 								}
 								if ($Tmerge[$Trow][$Tcol] == 1){
 									if (isset($ts['colspan'])){
-										$table .= "<td colspan='".$ts['colspan']."'; style='".$cellwc.$style;
+										$table .= "<td colspan='".$ts['colspan']."' style='".$cellwc.$style;
 									} else {
 										$table .= "<td style='".$cellwc.$style;
 									}
 								} else {
 									if (isset($ts['colspan'])){
-										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."'; colspan='".$ts['colspan']."'; style='".$cellwc.$style;
+										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."' colspan='".$ts['colspan']."' style='".$cellwc.$style;
 									} else {
-										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."'; style='".$cellwc.$style;
+										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."' style='".$cellwc.$style;
 									}
 								}
 							} else {
 								if ($ts['cellwtype'] == 'pct'){
 									$cellwc = "width:".floor($ts['cellwidth'] / 50)."%; ";
 								} else if ($ts['cellwtype'] == 'dxa'){
-									$cellwc = "width:".floor($ts['cellwidth'] / $this->MTFactor)."px; ";
+									$cellwc = "width:".round($ts['cellwidth'] / $Twidth *100,2)."%; ";
+									$cellwc = '';
 								} else {
 									$cellwc = '';
 								}
 								if ($Tmerge[$Trow][$Tcol] == 1){
 									if (isset($ts['colspan'])){
-										$table .= "<td colspan='".$ts['colspan']."'; style='".$cellwc.$style;
+										$table .= "<td colspan='".$ts['colspan']."' style='".$cellwc.$style;
 									} else {
 										$table .= "<td style='".$cellwc.$style;
 									}
 								} else {
 									if (isset($ts['colspan'])){
-										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."'; colspan='".$ts['colspan']."'; style='".$cellwc.$style;
+										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."' colspan='".$ts['colspan']."' style='".$cellwc.$style;
 									} else {
-										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."'; style='".$cellwc.$style;
+										$table .= "<td rowspan='".$Tmerge[$Trow][$Tcol]."' style='".$cellwc.$style;
 									}
 								}
 							}
@@ -3579,6 +3602,7 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 				$tc2 = new SimpleXMLElement($tc->readOuterXML());
 				foreach ($tc2->children('w',true) as $ch) {
 					if (in_array($ch->getName(), ['left','top','bottom','right']) ) {
+						$line = '';
 						$line = $this->convertLine($ch['val']);
 						if ($ch['color'] == 'auto'){
 							$tbc = '000000';
@@ -3590,6 +3614,9 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 							$zlinT = 1;
 						}
 						$Tname = $ch->getName();
+						if ($line == "double"){
+							$zlinT = $zlinT * 3;
+						}
 						$style[$Tname] = ":".$zlinT."px ".$line." #".$tbc.";";
 					}
 				}
@@ -3839,7 +3866,7 @@ class WordPHP // Version v2.1.14 - Timothy Edwards - 2 Nov 2024
 			echo "</div>";
 		}
 		if ($this->Maths == 'Y'){ // add in the Mathjax script if required
-			$Mtext = "<script>\n MathJax = {  loader: {load: ['[tex]/mathtools']},\n tex: {packages: {'[+]': ['mathtools']}}, };\n </script>\n <script type=\"text/javascript\" id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js\">\n </script>\n";
+//			$Mtext = "<script>\n MathJax = {  loader: {load: ['[tex]/mathtools']},\n tex: {packages: {'[+]': ['mathtools']}}, };\n </script>\n <script type=\"text/javascript\" id=\"MathJax-script\" async src=\"https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js\">\n </script>\n";
 			$text = $Mtext."\n".$text;
 		}
 		if ($this->Hcss == 'Y'){
